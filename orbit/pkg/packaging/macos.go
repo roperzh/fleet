@@ -249,7 +249,7 @@ func xarBom(opt Options, rootPath string) error {
 	// Make bom
 	var cmdMkbom *exec.Cmd
 	switch runtime.GOOS {
-	case "darwin":
+	case "darwin", "linux":
 		cmdMkbom = exec.Command("mkbom", filepath.Join(rootPath, "root"), filepath.Join("flat", "base.pkg", "Bom"))
 		cmdMkbom.Dir = rootPath
 	default:
@@ -287,7 +287,7 @@ func xarBom(opt Options, rootPath string) error {
 	// Make xar
 	var cmdXar *exec.Cmd
 	switch runtime.GOOS {
-	case "darwin":
+	case "darwin", "linux":
 		cmdXar = exec.Command("xar", append([]string{"--compression", "none", "-cf", filepath.Join("..", "orbit.pkg")}, files...)...)
 		cmdXar.Dir = filepath.Join(rootPath, "flat")
 	default:
