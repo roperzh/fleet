@@ -1,7 +1,7 @@
 name: Test packaging
 
 # This workflow tests packaging of Fleet-osquery with the
-# `fleetctl package' command. It fetches the targets: orbit,
+# `fleetctl package` command. It fetches the targets: orbit,
 # osquery and fleet-desktop from the default (Fleet's) TUF server,
 # https://tuf.fleetctl.com.
 
@@ -13,6 +13,9 @@ on:
   pull_request:
     paths:
       - '**.go'
+      - 'tools/fleetctl-docker/**'
+      - 'tools/wix-docker/**'
+      - 'tools/bomutils-docker/**'
       - '.github/workflows/test-packaging.yml'
   workflow_dispatch: # Manual
 
@@ -60,6 +63,14 @@ jobs:
     - name: Build fleetctl
       run: make fleetctl
 
+    # TODO: pull the image from the registry instead once it's published 
+    - name: Build fleetdm/fleetctl
+      run: |
+        make xp-fleetctl
+        docker build -t fleetdm/fleetctl --platform=linux/amd64 -f tools/fleetctl-docker/Dockerfile .
+
+    - name: Build DEB
+      run: ./build/fleetctl package --type deb --enroll-secret=foo --fleet-url=https://localhost:8080
     - name: Build DEB
       run: ./build/fleetctl package --type deb --enroll-secret=foo --fleet-url=https://localhost:8080
 
