@@ -13,4 +13,4 @@ COPY --from=fleetdm/wix:latest /home/wine /home/wine
 # copy fleetctl
 COPY build/binary-bundle/linux/fleetctl /usr/bin/fleetctl
 
-RUN apt-get install -y curl cpio && rm -rf /var/lib/apt/lists/* 
+RUN apt-get update && apt-get install -y ca-certificates cpio && rm -rf /var/lib/apt/lists/* 

@@ -19,11 +19,20 @@ const (
 // directory. See
 // https://wixtoolset.org/documentation/manual/v3/overview/heat.html.
 func Heat(path string) error {
+	//	cmd := exec.Command(
+	//		"docker", "run", "--rm", "--platform", "linux/amd64",
+	//		"--volume", path+":/wix", // mount volume
+	//		"fleetdm/wix:latest",  // image name
+	//		"heat", "dir", "root", // command in image
+	//		"-out", "heat.wxs",
+	//		"-gg", "-g1", // generate UUIDs (required by wix)
+	//		"-cg", "OrbitFiles", // set ComponentGroup name
+	//		"-scom", "-sfrag", "-srd", "-sreg", // suppress unneccesary generated items
+	//		"-dr", directoryReference, // set reference name
+	//		"-ke", // keep empty directories
+	//	)
 	cmd := exec.Command(
-		"docker", "run", "--rm", "--platform", "linux/amd64",
-		"--volume", path+":/wix", // mount volume
-		"fleetdm/wix:latest",  // image name
-		"heat", "dir", "root", // command in image
+		"/home/wine/bin/heat", "dir", "root", // command in image
 		"-out", "heat.wxs",
 		"-gg", "-g1", // generate UUIDs (required by wix)
 		"-cg", "OrbitFiles", // set ComponentGroup name
@@ -46,10 +55,7 @@ func Heat(path string) error {
 // https://wixtoolset.org/documentation/manual/v3/overview/candle.html.
 func Candle(path string) error {
 	cmd := exec.Command(
-		"docker", "run", "--rm", "--platform", "linux/amd64",
-		"--volume", path+":/wix", // mount volume
-		"fleetdm/wix:latest",             // image name
-		"candle", "heat.wxs", "main.wxs", // command in image
+		"/home/wine/bin/candle", "heat.wxs", "main.wxs", // command in image
 		"-ext", "WixUtilExtension",
 		"-arch", "x64",
 	)
@@ -68,10 +74,7 @@ func Candle(path string) error {
 // https://wixtoolset.org/documentation/manual/v3/overview/light.html.
 func Light(path string) error {
 	cmd := exec.Command(
-		"docker", "run", "--rm", "--platform", "linux/amd64",
-		"--volume", path+":/wix", // mount volume
-		"fleetdm/wix:latest",                  // image name
-		"light", "heat.wixobj", "main.wixobj", // command in image
+		"/home/wine/bin/light", "heat.wixobj", "main.wixobj", // command in image
 		"-ext", "WixUtilExtension",
 		"-b", "root", // Set directory for finding heat files
 		"-out", "orbit.msi",
