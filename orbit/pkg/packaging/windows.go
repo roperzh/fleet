@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
@@ -23,7 +22,7 @@ func BuildMSI(opt Options) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	defer os.RemoveAll(tmpDir)
+	//	defer os.RemoveAll(tmpDir)
 
 	filesystemRoot := filepath.Join(tmpDir, "root")
 	if err := secure.MkdirAll(filesystemRoot, constant.DefaultDirMode); err != nil {
@@ -100,7 +99,7 @@ func BuildMSI(opt Options) (string, error) {
 		}
 	}
 
-	if err := wix.Heat(tmpDir); err != nil {
+	if err := wix.Heat(tmpDir, opt.NativeTooling); err != nil {
 		return "", fmt.Errorf("package root files: %w", err)
 	}
 
@@ -108,11 +107,11 @@ func BuildMSI(opt Options) (string, error) {
 		return "", fmt.Errorf("transform heat: %w", err)
 	}
 
-	if err := wix.Candle(tmpDir); err != nil {
+	if err := wix.Candle(tmpDir, opt.NativeTooling); err != nil {
 		return "", fmt.Errorf("build package: %w", err)
 	}
 
-	if err := wix.Light(tmpDir); err != nil {
+	if err := wix.Light(tmpDir, opt.NativeTooling); err != nil {
 		return "", fmt.Errorf("build package: %w", err)
 	}
 
