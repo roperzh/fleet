@@ -116,6 +116,9 @@ func BuildMSI(opt Options) (string, error) {
 	}
 
 	filename := "fleet-osquery.msi"
+	if opt.NativeTooling {
+		filename = filepath.Join("build", filename)
+	}
 	if err := file.Copy(filepath.Join(tmpDir, "orbit.msi"), filename, constant.DefaultFileMode); err != nil {
 		return "", fmt.Errorf("rename msi: %w", err)
 	}

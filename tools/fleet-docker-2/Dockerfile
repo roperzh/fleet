@@ -16,6 +16,6 @@ COPY --from=fleetdm/wix:latest /home/wine /home/wine
 # copy fleetctl
 COPY build/binary-bundle/linux/fleetctl /usr/bin/fleetctl
 
-ENV WINEPREFIX=/home/wine/.wine WINEARCH=win32 PATH="/home/wine/bin:$PATH" WINEDEBUG=-all FLEETCTL_NATIVE_TOOLING=1
+ENV FLEETCTL_NATIVE_TOOLING=1 WINEPREFIX=/home/wine/.wine WINEARCH=win32 PATH="/home/wine/bin:$PATH" WINEDEBUG=-all
 
 ENTRYPOINT ["fleetctl"]
