@@ -39,14 +39,14 @@ func Heat(path string, native bool) error {
 		args = append(
 			args,
 			"docker", "run", "--rm", "--platform", "linux/amd64",
-			"--volume", path+":"+path, // mount volume
+			"--volume", path+":/wix", // mount volume
 			"fleetdm/wix:latest", // image name
 		)
 	}
 
 	args = append(args,
-		"heat", "dir", windowsJoin(path, "root"), // command
-		"-out", windowsJoin(path, "heat.wxs"),
+		"heat", "dir", "root", // command
+		"-out", "heat.wxs",
 		"-gg", "-g1", // generate UUIDs (required by wix)
 		"-cg", "OrbitFiles", // set ComponentGroup name
 		"-scom", "-sfrag", "-srd", "-sreg", // suppress unneccesary generated items
@@ -75,14 +75,14 @@ func Candle(path string, native bool) error {
 		args = append(
 			args,
 			"docker", "run", "--rm", "--platform", "linux/amd64",
-			"--volume", path+":"+path, // mount volume
+			"--volume", path+":/wix", // mount volume
 			"fleetdm/wix:latest", // image name
 		)
 	}
 
 	args = append(args,
-		"candle", windowsJoin(path, "heat.wxs"), windowsJoin(path, "main.wxs"), // command
-		"-out", windowsJoin(path, ""),
+		"candle", "heat.wxs", "main.wxs", // command
+		//		"-out", "/wix",
 		"-ext", "WixUtilExtension",
 		"-arch", "x64",
 	)
@@ -108,16 +108,16 @@ func Light(path string, native bool) error {
 		args = append(
 			args,
 			"docker", "run", "--rm", "--platform", "linux/amd64",
-			"--volume", path+":"+path, // mount volume
+			"--volume", path+":/wix", // mount volume
 			"fleetdm/wix:latest", // image name
 		)
 	}
 
 	args = append(args,
-		"light", windowsJoin(path, "heat.wixobj"), windowsJoin(path, "main.wixobj"), // command
+		"light", "heat.wixobj", "main.wixobj", // command
 		"-ext", "WixUtilExtension",
-		"-b", windowsJoin(path, "root"), // Set directory for finding heat files
-		"-out", windowsJoin(path, "orbit.msi"),
+		"-b", "root", // Set directory for finding heat files
+		"-out", "orbit.msi",
 		"-sval", // skip validation (otherwise Wine crashes)
 	)
 
