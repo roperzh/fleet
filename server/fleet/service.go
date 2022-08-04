@@ -111,6 +111,7 @@ type Service interface {
 	// function, so we can redirect back to the front end and load the page the viewer originally attempted to access
 	// when prompted for login.
 	CallbackSSO(ctx context.Context, auth Auth) (*SSOSession, error)
+	HandleSSOUserMissing(ctx context.Context) error
 
 	// SSOSettings returns non-sensitive single sign on information used before authentication
 	SSOSettings(ctx context.Context) (*SessionSSOSettings, error)

@@ -237,6 +237,11 @@ func (svc *Service) ModifyAppConfig(ctx context.Context, p []byte) (*fleet.AppCo
 		return nil, ctxerr.Wrap(ctx, invalid)
 	}
 
+	if license.Tier != "premium" && newAppConfig.SSOSettings.EnableAutomaticProvisioning != appConfig.SSOSettings.EnableAutomaticProvisioning {
+		invalid.Append("enable_automatic_provisioning", ErrMissingLicense.Error())
+		return nil, ctxerr.Wrap(ctx, invalid)
+	}
+
 	// We apply the config that is incoming to the old one
 	decoder := json.NewDecoder(bytes.NewReader(p))
 	decoder.DisallowUnknownFields()

@@ -57,6 +57,8 @@ type SSOSettings struct {
 	// EnableSSOIdPLogin flag to determine whether or not to allow IdP-initiated
 	// login.
 	EnableSSOIdPLogin bool `json:"enable_sso_idp_login"`
+	// EnableAutomaticProvisioning TODO
+	EnableAutomaticProvisioning bool `json:"enable_automatic_provisioning"`
 }
 
 // SMTPSettings is part of the AppConfig which defines the wire representation
