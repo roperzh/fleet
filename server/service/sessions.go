@@ -462,7 +462,7 @@ func (svc *Service) CallbackSSO(ctx context.Context, auth fleet.Auth) (*fleet.SS
 	if err != nil {
 		var nfe notFoundErrorInterface
 		if errors.As(err, &nfe) {
-			if err := svc.HandleSSOUserMissing(ctx); err != nil {
+			if err := svc.HandleSSOUserMissing(ctx, auth.UserID()); err != nil {
 				return nil, ctxerr.Wrap(ctx, err)
 			}
 		}
@@ -484,8 +484,8 @@ func (svc *Service) CallbackSSO(ctx context.Context, auth fleet.Auth) (*fleet.SS
 	return result, nil
 }
 
-func (svc *Service) HandleSSOUserMissing(ctx context.Context) error {
-	return ssoError{err: err, code: ssoAccountInvalid}
+func (svc *Service) HandleSSOUserMissing(ctx context.Context, email string) error {
+	return ssoError{err: ctxerr.New(ctx, "user does not exist"), code: ssoAccountInvalid}
 }
 
 ////////////////////////////////////////////////////////////////////////////////

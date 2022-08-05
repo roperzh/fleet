@@ -58,6 +58,8 @@ type Service interface {
 	// User returns a valid User given a User ID.
 	User(ctx context.Context, id uint) (user *User, err error)
 
+	NewUser(ctx context.Context, p UserPayload) (*User, error)
+
 	// UserUnauthorized returns a valid User given a User ID, *skipping authorization checks*
 	// This method should only be used in middleware where there is not yet a viewer context and we need to load up a
 	// user to create that context.
@@ -111,7 +113,8 @@ type Service interface {
 	// function, so we can redirect back to the front end and load the page the viewer originally attempted to access
 	// when prompted for login.
 	CallbackSSO(ctx context.Context, auth Auth) (*SSOSession, error)
-	HandleSSOUserMissing(ctx context.Context) error
+	// HandleSSOUserMissing TODO
+	HandleSSOUserMissing(ctx context.Context, email string) error
 
 	// SSOSettings returns non-sensitive single sign on information used before authentication
 	SSOSettings(ctx context.Context) (*SessionSSOSettings, error)
