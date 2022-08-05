@@ -389,6 +389,7 @@ the way that the Fleet server works.
 			}
 
 			if license.IsPremium() {
+				fmt.Println("-------------------- Initializing premium service")
 				svc, err = eeservice.NewService(svc, ds, logger, config, mailService, clock.C, license)
 				if err != nil {
 					initFatal(err, "initial Fleet Premium service")

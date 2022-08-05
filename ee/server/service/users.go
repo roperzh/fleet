@@ -14,7 +14,7 @@ func (svc *Service) HandleSSOUserMissing(ctx context.Context, email string) erro
 		return ctxerr.Wrap(ctx, err, "getting app config")
 	}
 
-	if !config.SSOSettings.EnableAutomaticProvisioning {
+	if !config.SSOSettings.EnableJITProvisioning {
 		return svc.Service.HandleSSOUserMissing(ctx, email)
 	}
 

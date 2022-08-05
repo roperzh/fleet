@@ -147,6 +147,7 @@ export interface IConfig {
     idp_name: string;
     enable_sso: boolean;
     enable_sso_idp_login: boolean;
+    enable_jit_provisioning: boolean;
   };
   host_expiry_settings: {
     host_expiry_enabled: boolean;

@@ -237,7 +237,7 @@ func (svc *Service) ModifyAppConfig(ctx context.Context, p []byte) (*fleet.AppCo
 		return nil, ctxerr.Wrap(ctx, invalid)
 	}
 
-	if license.Tier != "premium" && newAppConfig.SSOSettings.EnableAutomaticProvisioning != appConfig.SSOSettings.EnableAutomaticProvisioning {
+	if license.Tier != "premium" && newAppConfig.SSOSettings.EnableJITProvisioning != appConfig.SSOSettings.EnableJITProvisioning {
 		invalid.Append("enable_automatic_provisioning", ErrMissingLicense.Error())
 		return nil, ctxerr.Wrap(ctx, invalid)
 	}
