@@ -112,7 +112,7 @@ type Service interface {
 	// CallbackSSO handles the IDP response. The original URL the viewer attempted to access is returned from this
 	// function, so we can redirect back to the front end and load the page the viewer originally attempted to access
 	// when prompted for login.
-	CallbackSSO(ctx context.Context, auth Auth) (*SSOSession, error)
+	// CallbackSSO(ctx context.Context, auth Auth) (*SSOSession, error)
 
 	InitSSOCallback(ctx context.Context, auth Auth) (string, error)
 	GetSSOUser(ctx context.Context, auth Auth) (*User, error)

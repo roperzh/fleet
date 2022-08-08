@@ -116,6 +116,7 @@ func DecodeAuthResponse(samlResponse string) (fleet.Auth, error) {
 	if err != nil {
 		return nil, fmt.Errorf("decoding saml response: %w", err)
 	}
+	fmt.Println(string(decoded))
 	var saml Response
 	err = xml.NewDecoder(bytes.NewBuffer(decoded)).Decode(&saml)
 	if err != nil {

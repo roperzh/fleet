@@ -2,6 +2,8 @@ package service
 
 import (
 	"context"
+	"errors"
+	"fmt"
 
 	"github.com/fleetdm/fleet/v4/server/contexts/ctxerr"
 	"github.com/fleetdm/fleet/v4/server/fleet"
@@ -14,17 +16,19 @@ func (svc *Service) GetSSOUser(ctx context.Context, auth fleet.Auth) (*fleet.Use
 		return nil, ctxerr.Wrap(ctx, err, "getting app config")
 	}
 
-	if !config.SSOSettings.EnableJITProvisioning {
-		return svc.Service.GetSSOUser(ctx, auth)
+	user, err := svc.ds.UserByEmail(ctx, auth.UserID())
+	var nfe fleet.NotFoundError
+	fmt.Println("=----------------------------------", errors.As(err, &nfe))
+	if errors.As(err, &nfe) && !config.SSOSettings.EnableJITProvisioning {
+		return nil, err
 	}
 
-	u := fleet.UserPayload{
+	user, err = svc.NewUser(ctx, fleet.UserPayload{
+		Name:       ptr.String(""),
 		Email:      ptr.String(auth.UserID()),
 		SSOEnabled: ptr.Bool(true),
 		GlobalRole: ptr.String(fleet.RoleObserver),
-	}
-
-	user, err := svc.NewUser(ctx, u)
+	})
 	if err != nil {
 		return nil, ctxerr.Wrap(ctx, err, "creating new SSO user")
 	}
