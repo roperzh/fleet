@@ -275,16 +275,21 @@ Cypress.Commands.add("setupSMTP", () => {
   });
 });
 
-Cypress.Commands.add("setupSSO", (enable_idp_login = false) => {
+Cypress.Commands.add("setupSSO", (options) => {
   const body = {
-    sso_settings: {
-      enable_sso: true,
-      enable_sso_idp_login: enable_idp_login,
-      entity_id: "https://localhost:8080",
-      idp_name: "SimpleSAML",
-      issuer_uri: "http://localhost:8080/simplesaml/saml2/idp/SSOService.php",
-      metadata_url: "http://localhost:9080/simplesaml/saml2/idp/metadata.php",
-    },
+    sso_settings: Object.assign(
+      {},
+      {
+        enable_sso: true,
+        enable_sso_idp_login: false,
+        enable_jit_provisioning: false,
+        entity_id: "https://localhost:8080",
+        idp_name: "SimpleSAML",
+        issuer_uri: "http://localhost:8080/simplesaml/saml2/idp/SSOService.php",
+        metadata_url: "http://localhost:9080/simplesaml/saml2/idp/metadata.php",
+      },
+      options
+    ),
   };
 
   cy.request({

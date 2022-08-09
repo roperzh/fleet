@@ -86,6 +86,31 @@ func (r resp) UserID() string {
 	return ""
 }
 
+// https://docs.ldap.com/specs/rfc2798.txt
+var displayNameAttrs = map[string]struct{}{
+	"name":            {},
+	"displayname":     {},
+	"cn":              {},
+	"urn:oid:2.5.4.3": {},
+	"http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name": {},
+}
+
+func (r resp) UserDisplayname() string {
+	if r.response != nil {
+		for _, attr := range r.response.Assertion.AttributeStatement.Attributes {
+			if _, ok := displayNameAttrs[attr.Name]; ok {
+				for _, v := range attr.AttributeValues {
+					if v.Value != "" {
+						return v.Value
+					}
+				}
+			}
+		}
+	}
+
+	return ""
+}
+
 func (r resp) status() (int, error) {
 	if r.response != nil {
 		statusURI := r.response.Status.StatusCode.Value

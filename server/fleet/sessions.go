@@ -6,6 +6,7 @@ import (
 
 type Auth interface {
 	UserID() string
+	UserDisplayname() string
 	RequestID() string
 }
 

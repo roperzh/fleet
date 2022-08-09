@@ -72,7 +72,10 @@ declare namespace Cypress {
      * NOTE: login() command is required before this, as it will make authenticated
      * requests.
      */
-    setupSSO(enable_idp_login?: boolean): Chainable<Element>;
+    setupSSO(options?: {
+      enable_sso_idp_login?: boolean;
+      enable_jit_provisioning?: boolean;
+    }): Chainable<Element>;
 
     /**
      * Custom command to login a user1@example.com via SSO.

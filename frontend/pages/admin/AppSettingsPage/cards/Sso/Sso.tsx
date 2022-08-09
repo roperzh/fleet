@@ -228,7 +228,11 @@ const Sso = ({
                   rel="noopener noreferrer"
                 >
                   Learn more
-                  <img src={OpenNewTabIcon} alt="open new tab" />
+                  <img
+                    src={OpenNewTabIcon}
+                    alt="open new tab"
+                    className="learn-more-icon"
+                  />
                 </a>
               </>
             </Checkbox>
