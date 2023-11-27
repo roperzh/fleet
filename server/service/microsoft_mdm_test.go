@@ -361,9 +361,11 @@ func checkWrappedSyncMLCmd(tag string, data string) error {
 
 func syncMLForTest(locURI string) []byte {
 	return []byte(fmt.Sprintf(`
-		<Replace>
-			<Target>
-				<LocURI>%s</LocURI>
-			</Target>
-		</Replace>`, locURI))
+<Replace>
+  <Item>
+    <Target>
+      <LocURI>%s</LocURI>
+    </Target>
+  </Item>
+</Replace>`, locURI))
 }
